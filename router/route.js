@@ -13,13 +13,10 @@ const router = Router();
 router.get("/todos/done", controller.getToDosDone);
 router.get("/todos/incomplete", controller.getToDosIncomplete);
 
-/* Add */
-router.post("/todos", controller.addToDo);
-
-/* Update: to Done or To-Do */
-router.put("/todos", controller.updateToDo);
-
-/* Delete: all To Dos (after user confirms) */
-router.delete("/todos", controller.deleteToDos);
+router
+  .route("/todos")
+  .post(controller.addToDo)
+  .put(controller.updateToDo)
+  .delete(controller.deleteToDos);
 
 export default router;
