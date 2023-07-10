@@ -1,28 +1,36 @@
 import ToDo_database from "../models/toDosSchema.js";
 
 const sampleItem = {
-  content: "sample",
+  content: "new item",
   done: false,
 };
 
-/* Get all To Do's */
+/* Get all To Do's that are incomplete */
 // Source: https://mongoosejs.com/docs/api/model.html#Model.find()
 export async function getToDosIncomplete(req, res) {
   // searchTerm is ${req.query.searchTerm}
 
   try {
     // empty object {} specifies to find all documents
-    const list = await ToDo_database.find({});
+    const list = await ToDo_database.find({ done: false });
     res.json(list);
   } catch (error) {
     res.json({ error });
   }
 }
 
+/* Get 10 most recently completed items */
 export async function getToDosDone(req, res) {
-  res.json(
-    `To Dos API get Done latest 10 items - GET request: searchTerm is ${req.query.searchTerm}`
-  );
+  // searchTerm is ${req.query.searchTerm}`
+
+  try {
+    const list = await ToDo_database.find({ done: true })
+      .sort({ createdAt: "descending" })
+      .limit(10);
+    res.json(list);
+  } catch (error) {
+    res.json({ error });
+  }
 }
 
 /* Add/Insert a To Do */
