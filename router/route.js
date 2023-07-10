@@ -13,10 +13,12 @@ const router = Router();
 router.get("/todos/done", controller.getToDosDone);
 router.get("/todos/incomplete", controller.getToDosIncomplete);
 
+router.put("/todos/:id", controller.updateToDo);
+
 router
   .route("/todos")
   .post(controller.addToDo)
-  .put(controller.updateToDo)
+  // .put(controller.updateToDo)
   .delete(controller.deleteToDos);
 
 export default router;

@@ -1,8 +1,8 @@
 import ToDo_database from "../models/toDosSchema.js";
 
 const sampleItem = {
-  content: "new item",
-  done: false,
+  content: "Spandeau Ballet",
+  done: true,
 };
 
 /* Get all To Do's that are incomplete */
@@ -40,9 +40,37 @@ export async function getToDosDone(req, res) {
 }
 
 /* Update a To Do */
+// Source: https://mongoosejs.com/docs/api/model.html#Model.findOneAndUpdate()
+// https://www.geeksforgeeks.org/mongoose-findbyidandupdate-function/
+// checkout options.maxTimeMS
 export async function updateToDo(req, res) {
-  // need to get req.params.id
-  res.json("To Dos API update - PUT request");
+  res.json(`API Update - PUT request. req.params.id: ${req.params.id}`);
+
+  // get ID from URL
+  const id = req.params.id ? req.params.id : false;
+
+  if (id) {
+    try {
+      // check with Mongoose _id
+      const doc = await ToDo_database.findById(id);
+      console.log("doc is", doc);
+
+      if (doc) {
+        if (doc.done) {
+          doc.done = false;
+        } else {
+          doc.done = true;
+        }
+        await doc.save();
+      } else {
+        console.log("no doc with that ID");
+      }
+    } catch (error) {
+      res.json({ error });
+    }
+  } else {
+    console.log("no ID provided in URL");
+  }
 }
 
 /* Add/Insert a To Do */
