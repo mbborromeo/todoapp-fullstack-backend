@@ -12,7 +12,7 @@ You will need your own .env file in the root folder, and define a number for POR
 or the server will default to
 [http://localhost:8080](http://localhost:8080).
 
-Also in the .env file, you will need a MongoDB Connection string with your username and password in the ATLAS_URI=. To get the connection string, go to Database > select cluster > Connect from:
+Also in the .env file, you will need to define a database password in DB_PASS=. To get the MongoDB connection string used in database/conn.js, go to Database > select cluster > Connect from:
 [https://cloud.mongodb.com](https://cloud.mongodb.com)
 
 The page will reload when you make changes.\
