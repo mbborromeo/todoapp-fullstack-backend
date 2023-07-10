@@ -1,17 +1,9 @@
-import { toDos } from "../models/toDosSchema.js";
+import { toDo } from "../models/toDosSchema.js";
 
-const sampleList = [
-  {
-    id: 1,
-    content: "Uno",
-    done: false,
-  },
-  {
-    id: 2,
-    content: "Dos",
-    done: true,
-  },
-];
+const sampleItem = {
+  content: "sample",
+  done: false,
+};
 
 /* Get all To Do's */
 export async function getToDosIncomplete(req, res) {
@@ -21,7 +13,7 @@ export async function getToDosIncomplete(req, res) {
 
   try {
     // find all elements inside To Do's collection
-    const list = await toDos.find();
+    const list = await toDo.find(); // req.query.searchTerm
     res.json(list);
   } catch (error) {
     res.json({ error });
@@ -37,11 +29,12 @@ export async function getToDosDone(req, res) {
 /* Add/Insert a To Do */
 export async function addToDo(req, res) {
   // res.json("To Dos API add - POST request");
+  // req.params.id
 
   try {
-    toDos
-      .insertMany({ list: sampleList })
-      .then(res.json({ msg: "Data saved successfully!" }));
+    toDo
+      .insertMany({ sampleItem })
+      .then(res.json({ msg: "Data posted successfully!" }));
   } catch (error) {
     res.json({ error });
   }
