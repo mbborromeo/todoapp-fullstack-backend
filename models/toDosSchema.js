@@ -1,11 +1,6 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
-/* To Do's collection model */
-// const toDosModel = new Schema({
-//   list: { type: Array, default: [] },
-// });
-
 const toDoModel = new Schema({
   id: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },
@@ -13,5 +8,5 @@ const toDoModel = new Schema({
   done: { type: Boolean, default: false },
 });
 
-// export const toDos = mongoose.model("ToDos", toDosModel);
-export const toDo = mongoose.model("ToDo", toDoModel);
+// Creates a model, which is a reference to MongoDB collection called "ToDo" and has the given schema/fields/shape
+export default mongoose.model("ToDo", toDoModel);
