@@ -6,12 +6,13 @@ const sampleItem = {
 };
 
 /* Get all To Do's */
+// Source: https://mongoosejs.com/docs/api/model.html#Model.find()
 export async function getToDosIncomplete(req, res) {
   // searchTerm is ${req.query.searchTerm}
 
   try {
-    // find all elements inside To Do's collection
-    const list = await ToDo_database.find();
+    // empty object {} specifies to find all documents
+    const list = await ToDo_database.find({});
     res.json(list);
   } catch (error) {
     res.json({ error });
@@ -25,13 +26,9 @@ export async function getToDosDone(req, res) {
 }
 
 /* Add/Insert a To Do */
+// Source: https://mongoosejs.com/docs/api/model.html#Model.create()
 export async function addToDo(req, res) {
   try {
-    // ToDo_database.insertMany({ sampleItem }).then(
-    //   res.json({ msg: "Data posted successfully!" })
-    // );
-
-    // Source: https://mongoosejs.com/docs/api/model.html#Model.create()
     await ToDo_database.create(sampleItem);
     res.json({ msg: "Data posted successfully!" });
   } catch (error) {
@@ -46,21 +43,12 @@ export async function updateToDo(req, res) {
 }
 
 /* Delete all To Do's */
+// Source: https://mongoosejs.com/docs/api/model.html#Model.deleteMany()
 export async function deleteToDos(req, res) {
-  // res.json("To Dos API delete all - DELETE request");
-
-  // Source: https://www.mongodb.com/docs/manual/reference/method/db.collection.remove/
-  // Not working:
   try {
-    const result = await ToDo_database.remove({});
+    // {} empty object specifies to delete all
+    const result = await ToDo_database.deleteMany({});
     res.json(result);
-
-    // if (result) {
-    //   // .then(res.json({ msg: "Data collection deleted successfully!" }))
-    //   res.json({ msg: "Data collection deleted successfully!" });
-    // } else {
-    //   res.json("Error on deleting");
-    // }
   } catch (error) {
     res.json({ error });
   }

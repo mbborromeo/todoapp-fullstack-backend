@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const toDoModel = new Schema({
-  id: { type: Number, default: 0 },
+  // _id is automatically created: https://mongoosejs.com/docs/guide.html#_id
   createdAt: { type: Date, default: Date.now },
   content: { type: String, default: "" },
   done: { type: Boolean, default: false },
