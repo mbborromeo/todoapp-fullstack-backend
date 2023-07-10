@@ -1,8 +1,8 @@
 import ToDo_database from "../models/toDosSchema.js";
 
 const sampleItem = {
-  content: "Spandeau Ballet",
-  done: true,
+  content: "Newby",
+  done: false,
 };
 
 /* Get all To Do's that are incomplete */
@@ -16,7 +16,7 @@ export async function getToDosIncomplete(req, res) {
         content: { $regex: req.query.searchTerm, $options: "i" },
       }),
     });
-    res.json(list);
+    return res.status(200).json(list);
   } catch (error) {
     res.json({ error });
   }
@@ -33,7 +33,8 @@ export async function getToDosDone(req, res) {
     })
       .sort({ createdAt: "descending" })
       .limit(10);
-    res.json(list);
+
+    return res.status(200).json(list);
   } catch (error) {
     res.json({ error });
   }
@@ -44,8 +45,6 @@ export async function getToDosDone(req, res) {
 // https://www.geeksforgeeks.org/mongoose-findbyidandupdate-function/
 // checkout options.maxTimeMS
 export async function updateToDo(req, res) {
-  res.json(`API Update - PUT request. req.params.id: ${req.params.id}`);
-
   // get ID from URL
   const id = req.params.id ? req.params.id : false;
 
@@ -53,7 +52,6 @@ export async function updateToDo(req, res) {
     try {
       // check with Mongoose _id
       const doc = await ToDo_database.findById(id);
-      console.log("doc is", doc);
 
       if (doc) {
         if (doc.done) {
@@ -62,6 +60,8 @@ export async function updateToDo(req, res) {
           doc.done = true;
         }
         await doc.save();
+
+        return res.status(204).json(doc);
       } else {
         console.log("no doc with that ID");
       }
@@ -77,8 +77,8 @@ export async function updateToDo(req, res) {
 // Source: https://mongoosejs.com/docs/api/model.html#Model.create()
 export async function addToDo(req, res) {
   try {
-    await ToDo_database.create(sampleItem);
-    res.json({ msg: "Data posted successfully!" });
+    const insertedDoc = await ToDo_database.create(sampleItem);
+    return res.status(201).json(insertedDoc);
   } catch (error) {
     res.json({ error });
   }
@@ -90,7 +90,7 @@ export async function deleteToDos(req, res) {
   try {
     // {} empty object specifies to delete all
     const result = await ToDo_database.deleteMany({});
-    res.json(result);
+    return res.status(204).json(result);
   } catch (error) {
     res.json({ error });
   }
