@@ -61,7 +61,7 @@ export async function updateToDo(req, res) {
         }
         await doc.save();
 
-        return res.status(204).json(doc);
+        return res.status(204);
       } else {
         console.log("no doc with that ID");
       }
