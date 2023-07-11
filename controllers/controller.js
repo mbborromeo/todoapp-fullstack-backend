@@ -46,30 +46,22 @@ export async function getToDosDone(req, res) {
 // checkout options.maxTimeMS
 export async function updateToDo(req, res) {
   // get ID from URL
-  const id = req.params.id ? req.params.id : false;
+  const id = req.params.id;
 
-  if (id) {
-    try {
-      // check with Mongoose _id
-      const doc = await ToDo_database.findById(id);
+  try {
+    // check with Mongoose _id
+    const doc = await ToDo_database.findById(id);
 
-      if (doc) {
-        if (doc.done) {
-          doc.done = false;
-        } else {
-          doc.done = true;
-        }
-        await doc.save();
-
-        return res.status(204);
-      } else {
-        console.log("no doc with that ID");
-      }
-    } catch (error) {
-      res.json({ error });
+    if (doc.done) {
+      doc.done = false;
+    } else {
+      doc.done = true;
     }
-  } else {
-    console.log("no ID provided in URL");
+
+    await doc.save();
+    return res.status(200).json(doc);
+  } catch (error) {
+    res.status(404).json({ msg: "error - no To Do with that ID" });
   }
 }
 
