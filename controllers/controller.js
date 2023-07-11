@@ -40,6 +40,48 @@ export async function getToDosDone(req, res) {
   }
 }
 
+/* combine getToDos done and incomplete into one API call */
+export async function getToDos(req, res) {
+  const arrayDone = [];
+  const arrayIncomplete = [];
+
+  try {
+    arrayDone = await ToDo_database.find({
+      done: true,
+      ...(req.query.searchTerm && {
+        content: { $regex: req.query.searchTerm, $options: "i" },
+      }),
+    })
+      .sort({ createdAt: "descending" })
+      .limit(10);
+
+    console.log("arrayDone", arrayDone);
+  } catch (error) {
+    res.json({ msg: "error finding Done to dos" });
+  }
+
+  try {
+    arrayIncomplete = await ToDo_database.find({
+      done: false,
+      ...(req.query.searchTerm && {
+        content: { $regex: req.query.searchTerm, $options: "i" },
+      }),
+    });
+
+    console.log("arrayIncomplete", arrayIncomplete);
+  } catch (error) {
+    res.json({ msg: "error finding Incomplete to dos" });
+  }
+
+  const responseObject = {
+    done: arrayDone,
+    incomplete: arrayIncomplete,
+  };
+  console.log("responseObject", responseObject);
+
+  return res.status(200).json(responseObject);
+}
+
 /* Update a To Do */
 // Source: https://mongoosejs.com/docs/api/model.html#Model.findOneAndUpdate()
 // https://www.geeksforgeeks.org/mongoose-findbyidandupdate-function/

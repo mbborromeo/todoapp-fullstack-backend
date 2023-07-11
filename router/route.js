@@ -10,6 +10,7 @@ const router = Router();
    Search: live text on both To-Do and Done columns
    URL parameters: ?searchTerm=
 */
+router.get("/todos", controller.getToDos);
 router.get("/todos/done", controller.getToDosDone);
 router.get("/todos/incomplete", controller.getToDosIncomplete);
 router.put("/todos/:id", controller.updateToDo);
