@@ -10,7 +10,7 @@ export async function getToDosIncomplete(req, res) {
       ...(req.query.searchTerm && {
         content: { $regex: req.query.searchTerm, $options: "i" },
       }),
-    });
+    }).sort({ content: "ascending" });
     return res.status(200).json(list);
   } catch (error) {
     res.json({ error });
@@ -28,7 +28,6 @@ export async function getToDosDone(req, res) {
     })
       .sort({ createdAt: "descending" })
       .limit(10);
-
     return res.status(200).json(list);
   } catch (error) {
     res.json({ error });
