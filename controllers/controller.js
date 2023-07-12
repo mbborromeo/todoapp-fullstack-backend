@@ -1,10 +1,5 @@
 import ToDo_database from "../models/toDosSchema.js";
 
-const sampleItem = {
-  content: "Newby",
-  done: false,
-};
-
 /* Get all To Do's that are incomplete */
 // Source: https://mongoosejs.com/docs/api/model.html#Model.find()
 // empty object {} argument specifies to find all documents
@@ -69,7 +64,10 @@ export async function updateToDo(req, res) {
 // Source: https://mongoosejs.com/docs/api/model.html#Model.create()
 export async function addToDo(req, res) {
   try {
-    const insertedDoc = await ToDo_database.create(sampleItem);
+    const insertedDoc = await ToDo_database.create({
+      content: req.query.task,
+      done: false,
+    });
     return res.status(201).json(insertedDoc);
   } catch (error) {
     res.json({ error });
