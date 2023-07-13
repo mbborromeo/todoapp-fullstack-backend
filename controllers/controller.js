@@ -28,6 +28,7 @@ export async function getToDosDone(req, res) {
     })
       .sort({ createdAt: "descending" })
       .limit(10);
+    list.sort((a, b) => a.content.localeCompare(b.content));
     return res.status(200).json(list);
   } catch (error) {
     res.json({ error });
