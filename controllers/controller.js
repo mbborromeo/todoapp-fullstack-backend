@@ -6,7 +6,7 @@ import ToDo_database from "../models/toDosSchema.js";
 export async function getToDosIncomplete(req, res) {
   try {
     const list = await ToDo_database.find({
-      done: false,
+      doneAt: null,
       ...(req.query.searchTerm && {
         content: { $regex: req.query.searchTerm, $options: "i" },
       }),
@@ -21,12 +21,12 @@ export async function getToDosIncomplete(req, res) {
 export async function getToDosDone(req, res) {
   try {
     const list = await ToDo_database.find({
-      done: true,
+      doneAt: { $ne: null },
       ...(req.query.searchTerm && {
         content: { $regex: req.query.searchTerm, $options: "i" },
       }),
     })
-      .sort({ createdAt: "descending" })
+      .sort({ doneAt: "descending" })
       .limit(10);
     list.sort((a, b) => a.content.localeCompare(b.content));
     return res.status(200).json(list);
@@ -47,10 +47,10 @@ export async function updateToDo(req, res) {
     // check with Mongoose _id
     const doc = await ToDo_database.findById(id);
 
-    if (doc.done) {
-      doc.done = false;
+    if (doc.doneAt) {
+      doc.doneAt = null;
     } else {
-      doc.done = true;
+      doc.doneAt = Date.now();
     }
 
     await doc.save();
@@ -66,7 +66,7 @@ export async function addToDo(req, res) {
   try {
     const insertedDoc = await ToDo_database.create({
       content: req.query.task,
-      done: false,
+      doneAt: null,
     });
     return res.status(201).json(insertedDoc);
   } catch (error) {
