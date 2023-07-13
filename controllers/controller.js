@@ -10,7 +10,9 @@ export async function getToDosIncomplete(req, res) {
       ...(req.query.searchTerm && {
         content: { $regex: req.query.searchTerm, $options: "i" },
       }),
-    }).sort({ content: "ascending" });
+    });
+    // .sort({ content: "ascending" }); // puts uppercase values in front
+    list.sort((a, b) => a.content.localeCompare(b.content)); // case-insensitive sort
     return res.status(200).json(list);
   } catch (error) {
     res.json({ error });
