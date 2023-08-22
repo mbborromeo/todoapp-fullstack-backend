@@ -41,7 +41,26 @@ export async function getToDosDone(req, res) {
 // Source: https://mongoosejs.com/docs/api/model.html#Model.findOneAndUpdate()
 // https://www.geeksforgeeks.org/mongoose-findbyidandupdate-function/
 // checkout options.maxTimeMS
-export async function updateToDo(req, res) {
+export async function updateToDoDone(req, res) {
+  // get ID from URL
+  const id = req.params.id;
+
+  try {
+    // check with Mongoose _id
+    const doc = await ToDo_database.findById(id);
+
+    if (!doc.doneAt) {
+      doc.doneAt = Date.now();
+    }
+
+    await doc.save();
+    return res.status(200).json(doc);
+  } catch (error) {
+    res.status(404).json({ msg: "error - no To Do with that ID" });
+  }
+}
+
+export async function updateToDoIncomplete(req, res) {
   // get ID from URL
   const id = req.params.id;
 
@@ -51,8 +70,6 @@ export async function updateToDo(req, res) {
 
     if (doc.doneAt) {
       doc.doneAt = null;
-    } else {
-      doc.doneAt = Date.now();
     }
 
     await doc.save();
