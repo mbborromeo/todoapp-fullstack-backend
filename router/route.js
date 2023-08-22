@@ -12,7 +12,8 @@ const router = Router();
 */
 router.get("/todos/done", controller.getToDosDone);
 router.get("/todos/incomplete", controller.getToDosIncomplete);
-router.put("/todos/:id", controller.updateToDo);
+router.put("/todos/:id/done", controller.updateToDoDone);
+router.put("/todos/:id/incomplete", controller.updateToDoIncomplete);
 router.route("/todos").post(controller.addToDo).delete(controller.deleteToDos);
 
 export default router;
