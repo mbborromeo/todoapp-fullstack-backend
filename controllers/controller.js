@@ -51,9 +51,9 @@ export async function updateToDoDone(req, res) {
 
     if (!doc.doneAt) {
       doc.doneAt = Date.now();
+      await doc.save();
     }
 
-    await doc.save();
     return res.status(200).json(doc);
   } catch (error) {
     res.status(404).json({ msg: "error - no To Do with that ID" });
@@ -70,9 +70,9 @@ export async function updateToDoIncomplete(req, res) {
 
     if (doc.doneAt) {
       doc.doneAt = null;
+      await doc.save();
     }
 
-    await doc.save();
     return res.status(200).json(doc);
   } catch (error) {
     res.status(404).json({ msg: "error - no To Do with that ID" });
