@@ -97,9 +97,9 @@ export async function addToDo(req, res) {
 // Source: https://mongoosejs.com/docs/api/model.html#Model.deleteMany()
 export async function deleteToDos(req, res) {
   try {
-    // {} empty object specifies to delete all
+    // {} empty object as argument specifies to delete all entries in DB
     const result = await ToDo_database.deleteMany({});
-    return res.status(204).json(result);
+    return res.status(200).json(result);
   } catch (error) {
     res.json({ error });
   }
