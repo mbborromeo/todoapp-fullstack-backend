@@ -42,19 +42,32 @@ export async function getToDosDone(req, res) {
 // https://www.geeksforgeeks.org/mongoose-findbyidandupdate-function/
 // checkout options.maxTimeMS
 export async function updateToDoDone(req, res) {
+  console.log("updateToDoDone res: ", res);
+
   // get ID from URL
   const id = req.params.id;
+  const filter = { id: id };
+  const update = { doneAt: Date.now() };
 
   try {
     // check with Mongoose _id
-    const doc = await ToDo_database.findById(id);
+    // const doc = await ToDo_database.findById(id);
+    // if (!doc.doneAt) {
+    //   doc.doneAt = Date.now();
+    //   await doc.save();
+    // }
+    // return res.status(200).json(doc);
 
-    if (!doc.doneAt) {
-      doc.doneAt = Date.now();
-      await doc.save();
-    }
+    // https://mongoosejs.com/docs/tutorials/findoneandupdate.html
+    const doc = await ToDo_database.findOneAndUpdate(filter, update, {
+      returnOriginal: false, // new: true,
+    });
+    console.log("updateToDoDone doc: ", doc);
 
-    return res.status(200).json(doc);
+    const result = res.status(200).json(doc);
+    console.log("updateToDoDone result: ", result);
+
+    return result;
   } catch (error) {
     res.status(404).json({ msg: "error - no To Do with that ID" });
   }
