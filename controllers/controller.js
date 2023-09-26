@@ -42,53 +42,60 @@ export async function getToDosDone(req, res) {
 // https://www.geeksforgeeks.org/mongoose-findbyidandupdate-function/
 // checkout options.maxTimeMS
 export async function updateToDoDone(req, res) {
-  console.log("updateToDoDone res: ", res);
-
   // get ID from URL
   const id = req.params.id;
-  const filter = { id: id };
+  const filter = { _id: id };
   const update = { doneAt: Date.now() };
+  const options = {
+    returnOriginal: false, // new: true,
+  };
 
   try {
-    // check with Mongoose _id
-    // const doc = await ToDo_database.findById(id);
-    // if (!doc.doneAt) {
-    //   doc.doneAt = Date.now();
-    //   await doc.save();
-    // }
-    // return res.status(200).json(doc);
-
     // https://mongoosejs.com/docs/tutorials/findoneandupdate.html
-    const doc = await ToDo_database.findOneAndUpdate(filter, update, {
-      returnOriginal: false, // new: true,
-    });
-    console.log("updateToDoDone doc: ", doc);
+    const doc = await ToDo_database.findOneAndUpdate(filter, update, options);
+    console.log("----- doc returned is:", doc);
 
-    const result = res.status(200).json(doc);
-    console.log("updateToDoDone result: ", result);
+    if (!doc) {
+      return res.status(404).json({ error: "error - no To Do with that ID" });
+    }
 
-    return result;
+    // status() returns a status code: https://www.geeksforgeeks.org/express-js-res-status-function/
+    // seems to need status() and json() for res body
+    return res.status(200).json(doc); // don't seem to need a return value.  What is a ServerResponse anyway?
   } catch (error) {
-    res.status(404).json({ msg: "error - no To Do with that ID" });
+    return res.status(500).json({ error: "Server error" }); // msg: "Server error"
   }
 }
 
 export async function updateToDoIncomplete(req, res) {
   // get ID from URL
   const id = req.params.id;
+  const filter = { _id: id };
+  const update = { doneAt: null };
+  const options = {
+    returnOriginal: false,
+  };
 
   try {
     // check with Mongoose _id
-    const doc = await ToDo_database.findById(id);
+    const doc = await ToDo_database.findOneAndUpdate(filter, update, options);
 
-    if (doc.doneAt) {
-      doc.doneAt = null;
-      await doc.save();
+    // Q - Do I still need to check for doc.doneAt value,
+    // since my front-end is handling whether to call updateToDoDone or updateToDoIncomplete
+    // based on whether the checkbox is checked or not?
+    // if (doc.doneAt) {
+    //   doc.doneAt = null;
+    //   await doc.save();
+    // }
+    // If I still need this check, shall I add a filter condition to check if doneAt is not null?
+
+    if (!doc) {
+      return res.status(404).json({ error: "error - no To Do with that ID" });
     }
 
     return res.status(200).json(doc);
   } catch (error) {
-    res.status(404).json({ msg: "error - no To Do with that ID" });
+    return res.status(500).json({ error: "Server error" }); // msg: "Server error"
   }
 }
 
