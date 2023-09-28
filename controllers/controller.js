@@ -12,7 +12,7 @@ export async function getToDosIncomplete(req, res) {
     });
     // .sort({ content: "ascending" }); // puts uppercase values in front
     list.sort((a, b) => a.content.localeCompare(b.content)); // case-insensitive sort
-    return res.status(200).json(list);
+    res.status(200).json(list);
   } catch (error) {
     res.json({ error });
   }
@@ -30,7 +30,7 @@ export async function getToDosDone(req, res) {
       .sort({ doneAt: "descending" })
       .limit(10);
     list.sort((a, b) => a.content.localeCompare(b.content));
-    return res.status(200).json(list);
+    res.status(200).json(list);
   } catch (error) {
     res.json({ error });
   }
@@ -44,24 +44,22 @@ export async function updateToDoDone(req, res) {
   const id = req.params.id; // test incorrect ID: "123e2bab57c90c5a695d8ABC"
   const filter = { _id: id };
   const update = { doneAt: Date.now() };
-  const options = {
-    returnOriginal: false, // new: true,
-  };
 
   try {
-    // https://mongoosejs.com/docs/tutorials/findoneandupdate.html
-    const doc = await ToDo_database.findOneAndUpdate(filter, update, options);
+    const result = await ToDo_database.updateOne(filter, update);
 
-    if (!doc) {
+    if (result.modifiedCount !== 1) {
+      // https://medium.com/gist-for-js/use-of-res-json-vs-res-send-vs-res-end-in-express-b50688c0cddf
+      // specify return to stop code continuing below
       return res.status(404).json({ error: "No To Do with that ID" });
     }
 
-    // status() returns a status code: https://www.geeksforgeeks.org/express-js-res-status-function/
-    // seems to need status() and json() for res body
-    return res.status(200).json(doc); // don't seem to need a return value.  What is a ServerResponse anyway?
+    // always include status() to return the HTTP status code: https://www.geeksforgeeks.org/express-js-res-status-function/
+    // needs json() if sending res body, or send() if not sending body
+    res.status(204).send();
   } catch (error) {
     console.log("catch error:", error);
-    return res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error: "Server error" });
   }
 }
 
@@ -70,30 +68,18 @@ export async function updateToDoIncomplete(req, res) {
   const id = req.params.id;
   const filter = { _id: id };
   const update = { doneAt: null };
-  const options = {
-    returnOriginal: false,
-  };
 
   try {
-    const doc = await ToDo_database.findOneAndUpdate(filter, update, options);
+    const result = await ToDo_database.updateOne(filter, update);
 
-    // Q - Do I still need to check for doc.doneAt value,
-    // since my front-end is handling whether to call updateToDoDone or updateToDoIncomplete
-    // based on whether the checkbox is checked or not?
-    // if (doc.doneAt) {
-    //   doc.doneAt = null;
-    //   await doc.save();
-    // }
-    // If I still need this check, shall I add a filter condition to check if doneAt is not null?
-
-    if (!doc) {
+    if (result.modifiedCount !== 1) {
       return res.status(404).json({ error: "error - no To Do with that ID" });
     }
 
-    return res.status(200).json(doc);
+    res.status(204).send();
   } catch (error) {
     console.log("catch error:", error);
-    return res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error: "Server error" });
   }
 }
 
@@ -104,7 +90,10 @@ export async function addToDo(req, res) {
       content: req.query.task,
       doneAt: null,
     });
-    return res.status(201).json(insertedDoc);
+    // status code 201: request succeeded, and a new resource was created as a result.
+    // This is typically the response sent after POST requests:
+    // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+    res.status(201).json(insertedDoc);
   } catch (error) {
     res.json({ error });
   }
@@ -115,8 +104,10 @@ export async function addToDo(req, res) {
 export async function deleteToDos(req, res) {
   try {
     // {} empty object as argument specifies to delete all entries in DB
-    const result = await ToDo_database.deleteMany({});
-    return res.status(200).json(result);
+    await ToDo_database.deleteMany({});
+
+    // status code 204 means there is no body (content) in the response we're sending back
+    res.status(204).send(); // just send status code without response body
   } catch (error) {
     res.json({ error });
   }
