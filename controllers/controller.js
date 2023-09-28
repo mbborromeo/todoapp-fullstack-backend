@@ -44,12 +44,9 @@ export async function updateToDoDone(req, res) {
   const id = req.params.id; // test incorrect ID: "123e2bab57c90c5a695d8ABC"
   const filter = { _id: id };
   const update = { doneAt: Date.now() };
-  const options = {
-    returnOriginal: false, // new: true,
-  };
 
   try {
-    const result = await ToDo_database.updateOne(filter, update, options);
+    const result = await ToDo_database.updateOne(filter, update);
 
     if (result.modifiedCount !== 1) {
       // https://medium.com/gist-for-js/use-of-res-json-vs-res-send-vs-res-end-in-express-b50688c0cddf
@@ -57,8 +54,8 @@ export async function updateToDoDone(req, res) {
       return res.status(404).json({ error: "No To Do with that ID" });
     }
 
-    // status() returns HTTP status code: https://www.geeksforgeeks.org/express-js-res-status-function/
-    // seems to need status() and json() for res body, or send() if not sending body
+    // always include status() to return the HTTP status code: https://www.geeksforgeeks.org/express-js-res-status-function/
+    // needs json() if sending res body, or send() if not sending body
     res.status(204).send();
   } catch (error) {
     console.log("catch error:", error);
@@ -71,15 +68,11 @@ export async function updateToDoIncomplete(req, res) {
   const id = req.params.id;
   const filter = { _id: id };
   const update = { doneAt: null };
-  const options = {
-    returnOriginal: false,
-  };
 
   try {
-    const result = await ToDo_database.updateOne(filter, update, options);
+    const result = await ToDo_database.updateOne(filter, update);
 
     if (result.modifiedCount !== 1) {
-      // specify return to stop code continuing below
       return res.status(404).json({ error: "error - no To Do with that ID" });
     }
 
@@ -97,6 +90,9 @@ export async function addToDo(req, res) {
       content: req.query.task,
       doneAt: null,
     });
+    // status code 201: request succeeded, and a new resource was created as a result.
+    // This is typically the response sent after POST requests:
+    // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
     res.status(201).json(insertedDoc);
   } catch (error) {
     res.json({ error });
