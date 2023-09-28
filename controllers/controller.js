@@ -49,11 +49,12 @@ export async function updateToDoDone(req, res) {
   };
 
   try {
-    const doc = await ToDo_database.updateOne(filter, update, options);
+    const result = await ToDo_database.updateOne(filter, update, options);
 
-    if (doc.modifiedCount !== 1) {
+    if (result.modifiedCount !== 1) {
       // https://medium.com/gist-for-js/use-of-res-json-vs-res-send-vs-res-end-in-express-b50688c0cddf
-      res.status(404).json({ error: "No To Do with that ID" });
+      // specify return to stop code continuing below
+      return res.status(404).json({ error: "No To Do with that ID" });
     }
 
     // status() returns HTTP status code: https://www.geeksforgeeks.org/express-js-res-status-function/
@@ -75,10 +76,11 @@ export async function updateToDoIncomplete(req, res) {
   };
 
   try {
-    const doc = await ToDo_database.updateOne(filter, update, options);
+    const result = await ToDo_database.updateOne(filter, update, options);
 
-    if (doc.modifiedCount !== 1) {
-      res.status(404).json({ error: "error - no To Do with that ID" });
+    if (result.modifiedCount !== 1) {
+      // specify return to stop code continuing below
+      return res.status(404).json({ error: "error - no To Do with that ID" });
     }
 
     res.status(204).send();
