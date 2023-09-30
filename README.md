@@ -1,6 +1,6 @@
 # To Do website - Full Stack project - part 1/2 Back End
 
-Providing CRUD (create, read, update, delete) functionality via API calls to Mongo Database which the Front End [(part 2/2)](https://github.com/mbborromeo/todoapp-fullstack-frontend) of this project calls.
+Providing CRUD (create, read, update, delete) functionality via REST API calls which the Front End [(part 2/2)](https://github.com/mbborromeo/todoapp-fullstack-frontend) of this project makes, which therein call the corresponding functions on the Mongo Database.
 
 # Project created with
 
