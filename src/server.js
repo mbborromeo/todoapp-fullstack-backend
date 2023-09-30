@@ -20,14 +20,6 @@ config();
 const port = process.env.PORT || 8080;
 
 /* Routes */
-app.get("/", (req, res) => {
-  try {
-    res.json("GET request");
-  } catch (error) {
-    res.json(error);
-  }
-});
-
 /* API routes */
 app.use("/api", router);
 
@@ -39,9 +31,9 @@ connect()
         console.log(`Server connected to http://localhost:${port}`);
       });
     } catch (error) {
-      console.log("Cannot connect to server");
+      console.log("Cannot connect to server. Error:", error);
     }
   })
   .catch((error) => {
-    console.log("Invalid database connection!");
+    console.log("Invalid database connection! Error:", error);
   });
