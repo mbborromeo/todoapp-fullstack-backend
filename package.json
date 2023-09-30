@@ -7,6 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon ./src/server.js",
+    "build": "webpack –mode production",
     "lint": "eslint --fix --cache --cache-location ./node_modules/.cache/.eslintcache --ext js,jsx ./src",
     "lint:check": "eslint --cache --cache-location ./node_modules/.cache/.eslintcache --ext js,jsx ./src"
   },
