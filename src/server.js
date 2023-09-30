@@ -39,9 +39,9 @@ connect()
         console.log(`Server connected to http://localhost:${port}`);
       });
     } catch (error) {
-      console.log("Cannot connect to server");
+      console.log("Cannot connect to server. Error:", error);
     }
   })
   .catch((error) => {
-    console.log("Invalid database connection!");
+    console.log("Invalid database connection! Error:", error);
   });
