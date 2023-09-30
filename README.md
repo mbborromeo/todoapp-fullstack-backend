@@ -16,7 +16,7 @@ Nodemon v3.0.1\
 Node v16.17.1\
 NPM v8.15.0\
 Dotenv v16.3.1\
-Cors v2.8.5\
+Cors v2.8.5
 
 ## Available Scripts
 
