@@ -20,14 +20,6 @@ config();
 const port = process.env.PORT || 8080;
 
 /* Routes */
-app.get("/", (req, res) => {
-  try {
-    res.json("GET request");
-  } catch (error) {
-    res.json(error);
-  }
-});
-
 /* API routes */
 app.use("/api", router);
 
