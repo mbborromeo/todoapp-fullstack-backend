@@ -16,7 +16,18 @@ Nodemon v3.0.1\
 Node v16.17.1\
 NPM v8.15.0\
 Dotenv v16.3.1\
-Cors v2.8.5
+Cors v2.8.5\
+
+You will need your own .env file in the root folder, and define the following:\
+PORT=\
+DB_PASS=\
+DB_HOST=\
+DB_USER=\
+so that it corresponds to the correct backend API call to your MongoDB database,
+eg. ="mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}/?retryWrites=true&w=majority"
+
+To get the MongoDB connection string used in database/conn.js, go to Database > select cluster > Connect from:
+[https://cloud.mongodb.com](https://cloud.mongodb.com)
 
 ## Available Scripts
 
@@ -26,12 +37,7 @@ In the project directory, you can run:
 
 Runs the app in the development mode.\
 
-You will need your own .env file in the root folder, and define a number for PORT=,
-or the server will default to
-[http://localhost:8080](http://localhost:8080).
-
-Also in the .env file, you will need to define a database password in DB_PASS=. To get the MongoDB connection string used in database/conn.js, go to Database > select cluster > Connect from:
-[https://cloud.mongodb.com](https://cloud.mongodb.com)
+If PORT not specified in .env file, server will default to [http://localhost:8080](http://localhost:8080)).\
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
@@ -47,3 +53,15 @@ Will report and auto-fix issues
 ### `npm run lint:check`
 
 Will report issues without auto-fixing
+
+## Prettier Format Checker
+
+Check code format such as single-quotes, comma-dangle, indentation, etc.
+
+### `npm run format`
+
+Will check format and auto-fix issues
+
+### `npm run format:check`
+
+Will check format without auto-fixing
