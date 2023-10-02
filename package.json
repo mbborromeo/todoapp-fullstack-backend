@@ -8,7 +8,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon ./src/server.js",
     "lint": "eslint --fix --cache --cache-location ./node_modules/.cache/.eslintcache --ext js,jsx ./src",
-    "lint:check": "eslint --cache --cache-location ./node_modules/.cache/.eslintcache --ext js,jsx ./src"
+    "lint:check": "eslint --cache --cache-location ./node_modules/.cache/.eslintcache --ext js,jsx ./src",
+    "format": "prettier -w \"src/**/*.(js|jsx)\"",
+    "format:check": "prettier -c \"src/**/*.(js|jsx)\""
   },
   "repository": {
     "type": "git",
@@ -31,7 +33,9 @@
   },
   "devDependencies": {
     "eslint": "^8.50.0",
-    "eslint-plugin-node": "^11.1.0"
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-node": "^11.1.0",
+    "prettier": "^3.0.3"
   },
   "engines": {
     "node": ">=16.17.1"

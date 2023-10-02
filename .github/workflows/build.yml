@@ -22,7 +22,7 @@ jobs:
       - name: Validate
         run: |
           npm run lint:check
-          # npm run format:check
+          npm run format:check
 
       # - name: Build
       #   run: npm run build --if-present
