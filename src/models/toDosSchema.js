@@ -14,4 +14,3 @@ const toDoModel = new Schema({
 // Mongoose automatically looks for the plural, lowercased version of your model name.
 // eg. the model 'Tank' is for the 'tanks' collection in the database.
 export default mongoose.model("Todo", toDoModel);
-

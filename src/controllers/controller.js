@@ -113,4 +113,3 @@ export async function deleteToDos(req, res) {
     res.json({ error });
   }
 }
-
