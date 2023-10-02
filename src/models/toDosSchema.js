@@ -10,4 +10,3 @@ const toDoModel = new Schema({
 
 // Creates a model, which is a reference to MongoDB collection called "ToDo" and has the given schema/fields/shape
 export default mongoose.model("ToDo", toDoModel);
-
