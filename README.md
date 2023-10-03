@@ -2,9 +2,9 @@
 
 Providing CRUD (create, read, update, delete) functionality via REST API calls which the Front End [(part 2/2)](https://github.com/mbborromeo/todoapp-fullstack-frontend) of this project makes, which therein call the corresponding functions on the Mongo Database.
 
-# Project created with
+# Node.js Back End
 
-Node.js
+This project was built with Node.js, MongoDB and Express.
 
 # System Dependencies
 
@@ -16,7 +16,7 @@ Nodemon v3.0.1\
 Node v16.17.1\
 NPM v8.15.0\
 Dotenv v16.3.1\
-Cors v2.8.5\
+Cors v2.8.5
 
 You will need your own .env file in the root folder, and define the following:\
 PORT=\
@@ -35,9 +35,9 @@ In the project directory, you can run:
 
 ### `npm start`
 
-Runs the app in the development mode.\
+Runs the app in the development mode.
 
-If PORT not specified in .env file, server will default to [http://localhost:8080](http://localhost:8080)).\
+If PORT not specified in .env file, server will default to [http://localhost:8080](http://localhost:8080)).
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
