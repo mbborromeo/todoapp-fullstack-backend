@@ -8,15 +8,9 @@ This project was built with Node.js, MongoDB and Express.
 
 # System Dependencies
 
-Express.js v4.18.2\
-MongoDB\
-Mongoose v7.3.2 (library for MongoDB)\
-Morgan v1.10.0\
-Nodemon v3.0.1\
 Node v16.17.1\
 NPM v8.15.0\
-Dotenv v16.3.1\
-Cors v2.8.5
+MongoDB v6.0.10
 
 You will need your own .env file in the root folder, and define the following:\
 PORT=\
@@ -32,6 +26,10 @@ To get the MongoDB connection string used in database/conn.js, go to Database > 
 ## Available Scripts
 
 In the project directory, you can run:
+
+### `npm install`
+
+This will install the project and system dependencies.
 
 ### `npm start`
 
