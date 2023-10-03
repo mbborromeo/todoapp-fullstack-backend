@@ -1,10 +1,10 @@
-import toDo_database from "../models/toDosSchema.js";
+import toDoDatabase from "../models/toDosSchema.js";
 
 // Source: https://mongoosejs.com/docs/api/model.html#Model.find()
 // empty object {} argument specifies to find all documents
 export async function getToDosIncomplete(req, res) {
   try {
-    const list = await toDo_database.find({
+    const list = await toDoDatabase.find({
       doneAt: null,
       ...(req.query.searchTerm && {
         content: { $regex: req.query.searchTerm, $options: "i" },
@@ -21,7 +21,7 @@ export async function getToDosIncomplete(req, res) {
 /* Get 10 most recently completed items */
 export async function getToDosDone(req, res) {
   try {
-    const list = await toDo_database
+    const list = await toDoDatabase
       .find({
         doneAt: { $ne: null },
         ...(req.query.searchTerm && {
@@ -47,7 +47,7 @@ export async function updateToDoDone(req, res) {
   const update = { doneAt: Date.now() };
 
   try {
-    const result = await toDo_database.updateOne(filter, update);
+    const result = await toDoDatabase.updateOne(filter, update);
 
     if (result.modifiedCount !== 1) {
       // https://medium.com/gist-for-js/use-of-res-json-vs-res-send-vs-res-end-in-express-b50688c0cddf
@@ -71,7 +71,7 @@ export async function updateToDoIncomplete(req, res) {
   const update = { doneAt: null };
 
   try {
-    const result = await toDo_database.updateOne(filter, update);
+    const result = await toDoDatabase.updateOne(filter, update);
 
     if (result.modifiedCount !== 1) {
       return res.status(404).json({ error: "error - no To Do with that ID" });
@@ -87,7 +87,7 @@ export async function updateToDoIncomplete(req, res) {
 // Source: https://mongoosejs.com/docs/api/model.html#Model.create()
 export async function addToDo(req, res) {
   try {
-    const insertedDoc = await toDo_database.create({
+    const insertedDoc = await toDoDatabase.create({
       content: req.query.task,
       doneAt: null,
     });
@@ -105,7 +105,7 @@ export async function addToDo(req, res) {
 export async function deleteToDos(req, res) {
   try {
     // {} empty object as argument specifies to delete all entries in DB
-    await toDo_database.deleteMany({});
+    await toDoDatabase.deleteMany({});
 
     // status code 204 means there is no body (content) in the response we're sending back
     res.status(204).send(); // just send status code without response body
